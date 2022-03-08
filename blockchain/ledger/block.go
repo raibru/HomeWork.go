@@ -67,10 +67,11 @@ func Handle(err error) {
 func (b *Block) ToString(pck bool) string {
 	var out bytes.Buffer
 	fmt.Fprintln(&out, "----------------------------------------------------------------------------")
-	fmt.Fprintf(&out, "Prev. hash: %x\n", b.HashPrev)
-	fmt.Fprintf(&out, "Data      : %s\n", b.Data)
 	fmt.Fprintf(&out, "Hash      : %x\n", b.Hash)
-	fmt.Fprintf(&out, "PoW       : %s\n", strconv.FormatBool(pck))
+	fmt.Fprintf(&out, "Data      : %s\n", b.Data)
+	fmt.Fprintf(&out, "Prev. hash: %x\n", b.HashPrev)
+	fmt.Fprintf(&out, "Nonce     : %d\n", b.Nonce)
+	fmt.Fprintf(&out, "PoW Check : %s\n", strconv.FormatBool(pck))
 	fmt.Fprintf(&out, "Elapsed   : %s\n", b.Elapsed)
 	fmt.Fprintln(&out, "----------------------------------------------------------------------------")
 	return out.String()

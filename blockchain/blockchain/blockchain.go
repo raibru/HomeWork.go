@@ -150,13 +150,11 @@ func (iter *HashIterator) Next() *Block {
 		item, err := txn.Get(iter.CurrentHash)
 		Handle(err)
 
-		var encodedBlock []byte
 		err = item.Value(func(val []byte) error {
-			encodedBlock = val
+			block = Deserialize(val)
 			return nil
 		})
 		Handle(err)
-		block = Deserialize(encodedBlock)
 		return err
 	})
 	Handle(err)
@@ -184,7 +182,7 @@ func getLastHash(lastHash *[]byte, txn *badger.Txn) error {
 	item, err := txn.Get([]byte("lh"))
 	Handle(err)
 	err = item.Value(func(val []byte) error {
-		lastHash = &val
+		*lastHash = val
 		return nil
 	})
 	return err

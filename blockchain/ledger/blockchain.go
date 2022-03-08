@@ -1,4 +1,4 @@
-package blockchain
+package ledger
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"path"
 	"runtime"
 
-	"github.com/raibru/HomeWork/blockchain/config"
+	"github.com/raibru/blockchain/config"
 
 	"github.com/dgraph-io/badger/v3"
 )

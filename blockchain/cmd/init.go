@@ -6,8 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/raibru/HomeWork/blockchain/blockchain"
-	"github.com/raibru/HomeWork/blockchain/config"
+	"github.com/raibru/blockchain/config"
+	"github.com/raibru/blockchain/ledger"
 
 	"github.com/spf13/cobra"
 )
@@ -57,7 +57,7 @@ var initCmd = &cobra.Command{
 }
 
 func deleteDatabase() error {
-	if blockchain.DBexists() {
+	if ledger.DBexists() {
 		d, err := os.Open((*config.GetConfig()).DbPath)
 		if err != nil {
 			return err
@@ -83,10 +83,10 @@ func deleteDatabase() error {
 func createDatabase() error {
 	fmt.Println((*config.GetConfig()).ToString())
 
-	if blockchain.DBexists() {
+	if ledger.DBexists() {
 		return errors.New("Failed to create database. Database already exists")
 	}
-	chain := blockchain.CreateBlockChain()
+	chain := ledger.CreateBlockChain()
 	defer chain.Database.Close()
 	return nil
 }

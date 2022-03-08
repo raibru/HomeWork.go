@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/raibru/blockchain/ledger"
+	"github.com/raibru/blockchain/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/raibru/HomeWork/blockchain/blockchain"
-	"github.com/raibru/HomeWork/blockchain/config"
 )
 
 var cfgFile string
@@ -48,5 +48,5 @@ func initConfig() {
 	cfg.Difficulty = viper.GetInt("blockchain.pow.difficulty")
 	cfg.Root = viper.GetString("blockchain.block.root")
 	config.SetConfig(&cfg)
-	blockchain.Init()
+	ledger.Init()
 }

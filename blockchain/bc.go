@@ -5,7 +5,7 @@ package main
 import (
 	"os"
 
-	"github.com/raibru/HomeWork/blockchain/cmd"
+	"github.com/raibru/blockchain/cmd"
 )
 
 func main() {

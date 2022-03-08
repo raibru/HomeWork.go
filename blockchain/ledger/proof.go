@@ -1,4 +1,4 @@
-package blockchain
+package ledger
 
 import (
 	"bytes"
@@ -11,7 +11,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/raibru/HomeWork/blockchain/config"
+	"github.com/raibru/blockchain/config"
 )
 
 // ProofOfWork data structure

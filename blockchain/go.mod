@@ -1,4 +1,4 @@
-module github.com/raibru/HomeWork/blockchain
+module github.com/raibru/blockchain
 
 go 1.17
 

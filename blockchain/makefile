@@ -30,11 +30,13 @@ COLOR_OUTPUT = 2>&1 |                                        \
 
 .DEFAULT: $(help)
 
-BUILD_HASH   := $(shell git rev-parse --short HEAD)
-BUILD_NUM   := $(shell expr `cat .git/buildnum 2>/dev/null` + 1 >.git/buildnum && cat .git/buildnum)
+#BUILD_NUM   := $(shell expr `cat .buildnum 2>/dev/null` + 1 >.buildnum && cat .buildnum)
+BUILD_NUM   := $(shell cat .buildnum)
+BUILD_HASH  := $(shell git rev-parse --short HEAD)
 BUILD_DATE  := $(shell date +'%Y-%m-%d.%H:%M:%S')
-BUILD_TAG  := $(BUILD_HASH).$(BUILD_NUM)
-BUILD_VERSION := $(BUILD_HASH).$(BUILD_NUM) ($(BUILD_DATE))
+BUILD_HOST  := $(shell hostname)
+BUILD_TAG   := $(BUILD_HASH).$(BUILD_NUM)
+BUILD_INFO  := $(BUILD_HASH).$(BUILD_NUM)-($(BUILD_HOST))-($(BUILD_DATE))
 
 SHELL           := /bin/bash
 #GO              := /usr/local/go/bin/go
@@ -44,9 +46,7 @@ GRC				      := grc
 GO_PREFIX				:=
 GO_POSTFIX			:= |egrep 'ok|fail'
 GO_FLAGS        := -v
-#GO_FLAGS			:= -v gcflags=\"-m\"
-GO_LDFLAGS      := -ldflags="-X github.com/raibru/blockchain/cmd.buildTag=$(BUILD_TAG) -X github.com/raibru/blockchain/cmd.buildDate=$(BUILD_DATE)"
-BIN_FILE         := bchain
+BIN_FILE        := bchain
 MAIN_FILE       := $(BIN_FILE).go
 TEST_FILES      := $(wildcard *_test.go)
 TEST_FILES      += $(wildcard test/*.go)
@@ -55,6 +55,10 @@ SRCS_TEST       := ./...
 BIN_DIR         := ./bin
 BIN_DIR_DEV     := $(BIN_DIR)/dev
 RUNTIME_DEV     := ./runtime/develop
+
+#GO_FLAGS			   := -v gcflags=\"-m\"
+## eval when target build is called with actual BUILD_INFO setting
+GO_LDFLAGS      = -ldflags="-X github.com/raibru/gobaseconv/cmd.buildInfo=$(BUILD_INFO)"
 
 CLEAN_FILES 	  :=                    \
 									tags                \
@@ -117,6 +121,8 @@ run:
 	$(GO) run $(GO_FLAGS) $(MAIN_FILE)
 
 build:
+	$(eval BUILD_NUM := $(shell expr `cat .buildnum 2>/dev/null` + 1 >.buildnum && cat .buildnum))
+	$(eval BUILD_INFO := $(BUILD_HASH).$(BUILD_NUM)-($(BUILD_HOST))-($(BUILD_DATE))) 
 	$(GO) build $(GO_FLAGS) $(GO_LDFLAGS) -o $(BIN_DIR_DEV)/$(BIN_FILE) $(MAIN_FILE)
 
 build-windows:
